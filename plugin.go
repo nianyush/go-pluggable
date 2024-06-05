@@ -16,6 +16,7 @@ package pluggable
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -69,6 +70,7 @@ func (p Plugin) Run(e Event) (EventResponse, error) {
 	}
 
 	if err := json.Unmarshal(out, &r); err != nil {
+		fmt.Println("out ", string(out))
 		r.Error = err.Error()
 		return r, errors.Wrap(err, "while unmarshalling response")
 	}

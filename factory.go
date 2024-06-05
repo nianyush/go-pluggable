@@ -16,6 +16,7 @@ package pluggable
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -104,6 +105,7 @@ func (p PluginFactory) Run(name EventType, r io.Reader, w io.Writer) error {
 
 	dat, err := json.Marshal(resp)
 	if err != nil {
+		fmt.Println("factory resp", resp)
 		return err
 	}
 
