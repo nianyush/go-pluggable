@@ -58,6 +58,7 @@ func (p Plugin) Run(e Event) (EventResponse, error) {
 	if err != nil {
 		return r, errors.Wrap(err, "while marshalling event")
 	}
+	fmt.Println("exec cmd ", p.Executable, string(e.Name))
 	cmd := exec.Command(p.Executable, string(e.Name))
 	cmd.Stdin = bytes.NewBuffer([]byte(k))
 	cmd.Env = os.Environ()
@@ -68,9 +69,8 @@ func (p Plugin) Run(e Event) (EventResponse, error) {
 		r.Error = "error while executing plugin: " + err.Error() + string(b.String())
 		return r, errors.Wrap(err, "while executing plugin: "+string(b.String()))
 	}
-
+	fmt.Println("run out ", string(out))
 	if err := json.Unmarshal(out, &r); err != nil {
-		fmt.Println("out ", string(out))
 		r.Error = err.Error()
 		return r, errors.Wrap(err, "while unmarshalling response")
 	}
